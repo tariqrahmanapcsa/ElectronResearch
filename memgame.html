@@ -1,0 +1,79 @@
+<! DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+div#memory_game{
+    background: #ccccff;
+    border:#999 1px solid;
+    width:800px;
+    height:540px;
+    padding:24x;
+    margin:0px auto;
+}
+</style>
+<script>
+var array_mem = ['1','1','2','2','3','3','4','4','5','5','6','6','7','7','8''8'];
+var values_mem = [];
+var mem_tile_ids = [];
+var flipped = 0;
+Array.prototype.mem_tile_shuffle = function () {
+    var i = this.length, j, temp;
+    while(--i > 0){
+        j = Math.floor(Math.random() * (i+1));
+        temp = this[j];
+        this[j] = this[i];
+        this[i] = temp;
+    }
+}
+function newBoard () {
+    flipped = 0;
+    var output = '';
+    array_mem.mem_tile_shuffle ();
+    for var i = 0; i < array_mem.length; i++) {
+        output += '<div id="tile_'+i+'" onclick="memoryFlipTile(this,\''+array_mem[i]+'\')"></div>;
+        document.getElementById('memory_game').innerHTML = output;
+    }
+}
+function memoryFlipTile(tile,val) {
+    if(tile.innerHTML == "" && values_mem.length < 2) {
+        tile.style.background = '#FFF';
+        tile.innerHTML = val;
+        if(values_mem.length ==0) {
+            values_mem.push(val);
+            mem_tile_ids.push(tile.id);
+        }
+        else if(values_mem.length == 1) {
+            values_mem.push(val);
+            mem_tile_ids.push(tile.id);
+            if(values_mem[0 == values_mem[1]){
+                flipped +=2;
+                values_mem = [];
+                mem_tile_ids = [];
+                if(flipped == array_mem.length) {
+                    alert("Clearing board and creating new one...");
+                    document.getElementById('memory_game').innerHTML = "";
+                    newBoard(); 
+                }
+            }
+            else {
+                function flipBack () {
+                    var tile_1 = document.getElementById(mem_tile_ids[0]);
+                    var tile_2 = document.getElementById(mem_tile_ids[1]);
+                    tile_1.style.background = 'url(tile_bg.jpg) no-repeat';
+                    tile_1.innerHTML = "";
+                    tile_2.style.background = 'url(tile_bg.jpg) no-repeat';
+                    tile_2.innerHTML = "";
+                    values_mem = [];
+                    mem_tile_ids = [];
+                }
+                setTimeout (flipBack, 600);            }
+        }
+    }
+}
+</script>
+</head>
+<body>
+<div id ="memory_game"></div>
+<script>newBoard();</script>
+</body>
+</html>
